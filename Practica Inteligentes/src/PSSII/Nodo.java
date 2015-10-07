@@ -2,39 +2,28 @@ package PSSII;
 
 import java.util.LinkedList;
 
-public class Nodo {
-	private long id;
-	private double longitud;
-	private double latitud;
-	private LinkedList <NodoAdyacente> nodosAdyacentes;
-	public Nodo(long id, double longitud, double latitud) {		
-		this.id = id;
-		this.longitud = longitud;
-		this.latitud = latitud;
+import org.openstreetmap.osmosis.core.domain.v0_6.Node;
+
+public class Nodo {	
+	private Node nodo;
+	private LinkedList <Enlaces> nodosAdyacentes;
+	public Nodo(Node nodo) {	
+		this.nodo=nodo;
+		nodosAdyacentes=new LinkedList<Enlaces>();
 	}
 	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
+		return nodo.getId();
+	}	
 	public double getLongitud() {
-		return longitud;
-	}
-	public void setLongitud(double longitud) {
-		this.longitud = longitud;
-	}
+		return nodo.getLongitude();
+	}	
 	public double getLatitud() {
-		return latitud;
-	}
-	public void setLatitud(double latitud) {
-		this.latitud = latitud;
-	}
-	public LinkedList<NodoAdyacente> getNodosAdyacentes() {
+		return nodo.getLatitude();
+	}	
+	public LinkedList<Enlaces> getNodosAdyacentes() {
 		return nodosAdyacentes;
 	}
-	public void setNodosAdyacentes(LinkedList<NodoAdyacente> nodosAdyacentes) {
+	public void setNodosAdyacentes(LinkedList<Enlaces> nodosAdyacentes) {
 		this.nodosAdyacentes = nodosAdyacentes;
 	}
-
 }
