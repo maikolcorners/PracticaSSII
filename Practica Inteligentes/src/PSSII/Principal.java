@@ -108,11 +108,11 @@ public class Principal {
 		
 	}
 	public static void imprimirDatos (){
-		System.out.println(".Mostrar los Nodos Adyacentes de un Nodo."
+		System.out.println("Mostrar los Nodos Adyacentes de un Nodo."
 				+ "\n");			
 		System.out.println("Introduce id del Nodo\n");
 		int id=leer.nextInt();
 		for(int i=0;i<cGrafo.getNodo(id).getNodosAdyacentes().size();i++)
-			System.out.println(cGrafo.getNodo(id).getNodosAdyacentes().get(i).getId());		
+			System.out.println(cGrafo.getNodo(id).getNodosAdyacentes().get(i).getNodo2().getId());		
 	}
 }
