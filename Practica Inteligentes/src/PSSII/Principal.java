@@ -19,15 +19,14 @@ public class Principal {
 	static CrearGrafo cGrafo = new CrearGrafo();
 	static Scanner leer =new Scanner(System.in);
 	static public void main(String[] args) {
-
+		//Tarea 1
 		Sink sinkImplementation = new Sink() {
 			public void initialize(Map<String, Object> metaData) {
 			};
-
 			public void process(EntityContainer entityContainer) {
 				Nodo nodo;
 
-				Entity entity = entityContainer.getEntity();
+				Entity entity = entityContainer.getEntity();				
 				if (entity instanceof Node) {					
 					nodo = new Nodo((Node) entity);
 					cGrafo.getTablaNodos().put(nodo.getId(), nodo);
@@ -52,8 +51,8 @@ public class Principal {
 						}
 					}
 				}
-			}//Tarea 1
-
+			}//Tarea 1 Fin
+			//Tarea 2
 			private void addEnlace(Way entity, boolean dobleSentido, String informacion) {
 				List<WayNode> ListaWayNodes = entity.getWayNodes();
 				Enlaces nAdyacente;
@@ -75,6 +74,7 @@ public class Principal {
 				}
 
 			}
+			//Tarea 2 Fin
 
 			public void release() {
 			}
@@ -82,7 +82,8 @@ public class Principal {
 			public void complete() {
 			}
 
-		};		
+		};
+		//Tarea 1
 		System.out.println("Descargando mapa del sitio web...");
 		RunnableSource reader = new XmlDownloader(-3.9426, -3.9101, 38.9978, 38.9685,
 				"http://www.openstreetmap.org/api/0.6");
@@ -94,6 +95,7 @@ public class Principal {
 		System.out.println("Se estan procesando los datos del archivo xml...");
 		readerThread.start();
 		System.out.println("Comenzamos");
+		//Fin Tarea 1
 		
 		while (readerThread.isAlive()) {
 			try {
