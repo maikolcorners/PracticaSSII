@@ -3,6 +3,7 @@ package PSSII;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import org.openstreetmap.osmosis.core.container.v0_6.EntityContainer;
 import org.openstreetmap.osmosis.core.domain.v0_6.Entity;
@@ -15,7 +16,8 @@ import org.openstreetmap.osmosis.core.task.v0_6.Sink;
 import org.openstreetmap.osmosis.xml.v0_6.XmlDownloader;
 
 public class Principal {
-	static CrearGrafo cGrafo = new CrearGrafo();	 
+	static CrearGrafo cGrafo = new CrearGrafo();
+	static Scanner leer =new Scanner(System.in);
 	static public void main(String[] args) {
 
 		Sink sinkImplementation = new Sink() {
@@ -99,9 +101,16 @@ public class Principal {
 			} catch (InterruptedException e) {
 				/* No hacer nada */
 			}
-		}
-		for(int i=0;i<cGrafo.getNodo(803292484).getNodosAdyacentes().size();i++)
-			System.out.println(cGrafo.getNodo(803292484).getNodosAdyacentes().get(i).getId());
+		}		
+		imprimirDatos();
 		
+	}
+	public static void imprimirDatos (){
+		System.out.println(".Mostrar los Nodos Adyacentes de un Nodo."
+				+ "\n");			
+		System.out.println("Introduce id del Nodo\n");
+		int id=leer.nextInt();
+		for(int i=0;i<cGrafo.getNodo(id).getNodosAdyacentes().size();i++)
+			System.out.println(cGrafo.getNodo(id).getNodosAdyacentes().get(i).getId());		
 	}
 }
