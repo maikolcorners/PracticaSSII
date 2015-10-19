@@ -15,7 +15,5 @@ public class CrearGrafo {
 
 	public Nodo getNodo(long id) {
 		return TablaNodos.get(id);
-	}
-
-	
+	}	
 }

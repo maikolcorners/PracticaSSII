@@ -44,35 +44,31 @@ public class Principal {
 							oneway = t.getValue();
 					}
 					if (highway.equals("pedestrian") || highway.equals("trunk") || highway.equals("residential")) {
-						if (oneway.equals("yes")) {
-							addEnlace((Way) entity, false, info);
-						} else if (oneway.equals("no")) {
-							addEnlace((Way) entity, true, info);
-						}
+						if (oneway.equals("yes")||oneway.equals("no")) {
+							addEnlace((Way) entity, info); //Tarea 2
+						} 
 					}
 				}
 			}//Tarea 1 Fin
 			//Tarea 2
-			private void addEnlace(Way entity, boolean dobleSentido, String informacion) {
+			private void addEnlace(Way entity, String informacion) {
 				List<WayNode> ListaWayNodes = entity.getWayNodes();
-				Enlaces nAdyacente;
-				WayNode waynode1, waynode2;								
-				waynode1 = ListaWayNodes.get(0);
-				Nodo nodo1, nodo2;
+				NodoAdyacente nAdyacente;
+				WayNode waynode1, waynode2;	
+				double distancia;
+				waynode1 = ListaWayNodes.get(0);	
+				Nodo nodoP, nodoA;
 				for (int i = 1; i < ListaWayNodes.size(); i++) {
 					waynode2 = ListaWayNodes.get(i);
-					nodo1=cGrafo.getNodo(waynode1.getNodeId());
-					nodo2=cGrafo.getNodo(waynode2.getNodeId());					
-					nAdyacente = new Enlaces(nodo1,nodo2, informacion);
-					cGrafo.getNodo(waynode1.getNodeId()).getNodosAdyacentes().add(nAdyacente);
-					if (dobleSentido) {
-						nAdyacente = new Enlaces(nodo1,nodo2, informacion);
-						cGrafo.getNodo(waynode1.getNodeId()).getNodosAdyacentes().add(nAdyacente);
-					}
+					nodoP=cGrafo.getNodo(waynode1.getNodeId());
+					nodoA=cGrafo.getNodo(waynode2.getNodeId());
+					distancia=nodoP.calcularDistanciaNodoAdy(nodoA);
+					nAdyacente = new NodoAdyacente(nodoA.getId(),distancia, informacion);
+					cGrafo.getNodo(nodoP.getId()).getNodosAdyacentes().add(nAdyacente);
+					nAdyacente = new NodoAdyacente(nodoP.getId(),distancia, informacion);
+					cGrafo.getNodo(nodoA.getId()).getNodosAdyacentes().add(nAdyacente);					
 					waynode1 = waynode2;
-
 				}
-
 			}
 			//Tarea 2 Fin
 
@@ -113,6 +109,6 @@ public class Principal {
 		System.out.println("Introduce id del Nodo\n");
 		int id=leer.nextInt();
 		for(int i=0;i<cGrafo.getNodo(id).getNodosAdyacentes().size();i++)
-			System.out.println(cGrafo.getNodo(id).getNodosAdyacentes().get(i).getNodo2().getId());		
+			System.out.println(cGrafo.getNodo(id).getNodosAdyacentes().get(i).getIdA());		
 	}
 }
