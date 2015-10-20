@@ -82,7 +82,7 @@ public class Principal {
 		System.out.println("Descargando mapa del sitio web...");
 		
 
-		RunnableSource reader = new XmlDownloader(-4.0122,-3.8540, 39.0299, 38.9434,"http://www.openstreetmap.org/api/0.6");
+		RunnableSource reader = new XmlDownloader(-3.9426,-3.9101, 38.9978, 38.9685,"http://www.openstreetmap.org/api/0.6");
 		System.out.println("El mapa ha sido descargado.");
 
 		reader.setSink(sinkImplementation);
@@ -100,12 +100,22 @@ public class Principal {
 				/* No hacer nada */
 			}
 		}		
-		imprimirDatos();
-		tini = System.nanoTime();
-		algoritmo();
-		tiempo = System.nanoTime() - tini;
-		System.out.println("Tiempo: "+tiempo);
 		
+		System.out.println("Selecciona las siguientes opciones:\n"
+				+ "1.Imprimir datos del Nodo.\n"
+				+ "2.Imprimir nodos aleatorios.\n");
+		int opc=leer.nextInt();
+		switch(opc){
+		case 1:
+			imprimirDatos();
+			break;
+		case 2:
+			tini = System.nanoTime();
+			algoritmo();
+			tiempo = System.nanoTime() - tini;
+			System.out.println("Tiempo: "+tiempo);
+			break;	
+		}	
 	}
 	public static void algoritmo(){	
 		Random rndm = new Random(); 
@@ -117,7 +127,6 @@ public class Principal {
 		NodoBusqueda nodoPrimero = new NodoBusqueda(null,estado, 0, "", 0);		
 		frontera.insertar(nodoPrimero);
 		LinkedList<NodoAdyacente> listaAdyacentes;
-		//LinkedList<NodoBusqueda> listaNodoBAdyacentes = new LinkedList<NodoBusqueda>();
 		try{
 		for(;;){			
 			NodoBusqueda nodoSiguiente=frontera.getPrimerN();
