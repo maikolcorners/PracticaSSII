@@ -111,9 +111,9 @@ public class Principal {
 	}
 	public static void solucion() throws Exception{
 		System.out.print("Id Nodo origen: \n");
-		int nodoO=765309500;
+		int nodoO=leer.nextInt();
 		System.out.print("Id Nodo destino: \n");
-		int nodoD=504656555;
+		int nodoD=leer.nextInt();
 		System.out.println("Tipo de estrategia:\n"
 				+ "1.En Anchura.\n"
 				+ "2.En Profundidad.\n"
