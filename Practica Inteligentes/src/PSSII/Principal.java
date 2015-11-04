@@ -3,7 +3,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Stack;
 import org.openstreetmap.osmosis.core.container.v0_6.EntityContainer;
 import org.openstreetmap.osmosis.core.domain.v0_6.Entity;
 import org.openstreetmap.osmosis.core.domain.v0_6.Node;
@@ -121,10 +120,9 @@ public class Principal {
 				+ "3.En Costo.\n");
 		int estrategia=leer.nextInt();
 		System.out.println("Profundidad maxima.\n");
-		int prof=leer.nextInt();
-		Stack <NodoBusqueda>solucion = null;
+		int prof=leer.nextInt();		
 		problema=new Problema (cGrafo);
-		solucion=problema.Busqueda_Acotada(nodoO, nodoD,problema, prof, estrategia);			
+		problema.Busqueda_Acotada(nodoO, nodoD,problema, prof, estrategia);			
 	}	
 	public static void imprimirDatos () throws Exception{		
 		System.out.println("Mostrar los Nodos Adyacentes de un Nodo.");			

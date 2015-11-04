@@ -63,8 +63,8 @@ public class Problema {
 	 * if(a==idDestino){ ok=true; } act_prof=act_prof+inc_prof; } return
 	 * solucion; }
 	 */
-	public Stack<NodoBusqueda> Busqueda_Acotada(long idOrigen, long idDestino, Problema problema, int max_prof,
-			int estrategia) throws Exception {
+	public void Busqueda_Acotada(long idOrigen, long idDestino, Problema problema, int max_prof, int estrategia)
+			throws Exception {
 
 		try {
 			Stack<NodoBusqueda> rutaSolucion;
@@ -91,18 +91,17 @@ public class Problema {
 				rutaSolucion = CrearSolucion(nodoActual);
 			else
 				rutaSolucion = null;
-			String estra="";
-			if(estrategia==1){
-				estra="Anchura";
+			String estra = "";
+			if (estrategia == 1) {
+				estra = "Anchura";
 			}
-			if(estrategia==1){
-				estra="Profundidad";
+			if (estrategia == 1) {
+				estra = "Profundidad";
 			}
-			if(estrategia==1){
-				estra="Costo";
+			if (estrategia == 1) {
+				estra = "Costo";
 			}
-			generargpx(rutaSolucion,estra, max_prof);
-			return rutaSolucion;
+			generartxt(rutaSolucion, estra, max_prof);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -118,33 +117,26 @@ public class Problema {
 		return sol;
 	}
 
-	public void generargpx(Stack<NodoBusqueda> solucion, String srtEstrategia, int max_prof)
-			throws IOException {
+	public void generartxt(Stack<NodoBusqueda> solucion, String srtEstrategia, int max_prof) throws IOException {
 
 		long id_Origen, id_Destino;
 		double costo;
 		int num_nodos;
 
 		NodoBusqueda nodo;
-		RandomAccessFile salida;
-		salida = new RandomAccessFile("solucion.txt", "rw");
-		for (int i = 0; i < salida.length(); i++)
-			salida.writeBytes(" ");
-		salida.close();
-		salida = new RandomAccessFile("solucion.txt", "rw");
+		RandomAccessFile salida = null;
+		salida=new RandomAccessFile("solucion.txt", "rw");
 
 		num_nodos = solucion.size();
 		nodo = solucion.peek();
 		id_Origen = nodo.getEstado().getId();
 		System.out.printf("" + nodo.getEstado().getId());
-
-		
+		salida.writeBytes("\n\nEstado --> Id Nodo Coordenadas: (Latitud Nodo, Longitud Nodo)");
 		while (!solucion.isEmpty()) {
 			nodo = solucion.pop();
 			System.out.printf(" - " + nodo.getEstado().getId());
-			salida.writeBytes("\n\nEstado --> "+ nodo.getEstado().getId()+
-					" Coordenadas: (" +nodo.getEstado().getLatitud()+", "
-							+ nodo.getEstado().getLongitud()+")");		
+			salida.writeBytes("\n\nEstado --> " + nodo.getEstado().getId() + " Coordenadas: ("
+					+ nodo.getEstado().getLatitud() + ", " + nodo.getEstado().getLongitud() + ")");
 		}
 
 		id_Destino = nodo.getEstado().getId();
@@ -156,7 +148,8 @@ public class Problema {
 		salida.writeBytes("\nEstrategia:   " + srtEstrategia + ".");
 		salida.writeBytes("\nProfundidad Maxima:   " + max_prof + ".");
 		salida.writeBytes("\nCoste de la Solucion: " + costo + " metros.");
-		salida.writeBytes("\nComplejidad Espacial: " + num_nodos + " nodos.");	
+		salida.writeBytes("\nComplejidad Espacial: " + num_nodos + " nodos.");
+		salida.close();
 		System.out.println();
 	}
 }
