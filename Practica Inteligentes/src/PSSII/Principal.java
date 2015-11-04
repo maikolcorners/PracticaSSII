@@ -1,13 +1,9 @@
 package PSSII;
-
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Scanner;
-
+import java.util.Stack;
 import org.openstreetmap.osmosis.core.container.v0_6.EntityContainer;
 import org.openstreetmap.osmosis.core.domain.v0_6.Entity;
 import org.openstreetmap.osmosis.core.domain.v0_6.Node;
@@ -18,12 +14,12 @@ import org.openstreetmap.osmosis.core.task.v0_6.RunnableSource;
 import org.openstreetmap.osmosis.core.task.v0_6.Sink;
 import org.openstreetmap.osmosis.xml.v0_6.XmlDownloader;
 
+
 public class Principal {
 	static CrearGrafo cGrafo = new CrearGrafo();
+	static Problema problema; 
 	static Scanner leer =new Scanner(System.in);
-	static public void main(String[] args) {
-		long tini, tiempo;
-		//Tarea 1
+	static public void main(String[] args) throws Exception {		
 		Sink sinkImplementation = new Sink() {
 			public void initialize(Map<String, Object> metaData) {
 			};
@@ -82,7 +78,7 @@ public class Principal {
 		System.out.println("Descargando mapa del sitio web...");
 		
 
-		RunnableSource reader = new XmlDownloader(-3.9426,-3.9101, 38.9978, 38.9685,"http://www.openstreetmap.org/api/0.6");
+		RunnableSource reader = new XmlDownloader(-3.93201,-3.92111, 38.98396, 38.98875,"http://www.openstreetmap.org/api/0.6");
 		System.out.println("El mapa ha sido descargado.");
 
 		reader.setSink(sinkImplementation);
@@ -103,54 +99,40 @@ public class Principal {
 		
 		System.out.println("Selecciona las siguientes opciones:\n"
 				+ "1.Imprimir datos del Nodo.\n"
-				+ "2.Imprimir nodos aleatorios.\n");
+				+ "2.Imprimir ruta entre dos nodos.\n");
 		int opc=leer.nextInt();
 		switch(opc){
 		case 1:
 			imprimirDatos();
-			break;
+			break;		
 		case 2:
-			tini = System.nanoTime();
-			algoritmo();
-			tiempo = System.nanoTime() - tini;
-			System.out.println("Tiempo: "+tiempo);
-			break;	
+			solucion();
+			break;
 		}	
 	}
-	public static void algoritmo(){	
-		Random rndm = new Random(); 
-        rndm.setSeed(1000);  
-		Frontera frontera=new Frontera();
-		System.out.println("Introduce id del Nodo");
-		long id=leer.nextLong();
-		Estado estado = new Estado(id, cGrafo.getNodo(id).getLatitud(),cGrafo.getNodo(id).getLongitud());
-		NodoBusqueda nodoPrimero = new NodoBusqueda(null,estado, 0, "", 0);		
-		frontera.insertar(nodoPrimero);
-		LinkedList<NodoAdyacente> listaAdyacentes;
-		try{
-		for(;;){			
-			NodoBusqueda nodoSiguiente=frontera.getPrimerN();
-			System.out.println(nodoSiguiente.getEstado().getId());
-			listaAdyacentes= cGrafo.getNodo(nodoSiguiente.getEstado().getId()).getNodosAdyacentes();			 
-			Collections.shuffle(listaAdyacentes, rndm);
-			for(int i=0;i<listaAdyacentes.size();i++){
-				long idS=listaAdyacentes.get(i).getIdA();
-				Estado estado1=new Estado(idS,cGrafo.getNodo(idS).getLatitud(),cGrafo.getNodo(idS).getLongitud());
-				frontera.insertar(new NodoBusqueda(nodoSiguiente,estado1,0,"",0));
-			}			
-		}
-		}catch(Exception e){
-			System.out.println("Error: "+e.getMessage());
-		}
-	}
-	public static void imprimirDatos (){
-		
+	public static void solucion() throws Exception{
+		System.out.print("Id Nodo origen: \n");
+		int nodoO=765309500;
+		System.out.print("Id Nodo destino: \n");
+		int nodoD=504656555;
+		System.out.println("Tipo de estrategia:\n"
+				+ "1.En Anchura.\n"
+				+ "2.En Profundidad.\n"
+				+ "3.En Costo.\n");
+		int estrategia=leer.nextInt();
+		System.out.println("Profundidad maxima.\n");
+		int prof=leer.nextInt();
+		Stack <NodoBusqueda>solucion = null;
+		problema=new Problema (cGrafo);
+		solucion=problema.Busqueda_Acotada(nodoO, nodoD,problema, prof, estrategia);			
+	}	
+	public static void imprimirDatos () throws Exception{		
 		System.out.println("Mostrar los Nodos Adyacentes de un Nodo.");			
 		System.out.println("Introduce id del Nodo");
 		long id=leer.nextLong();
 		System.out.println("Nodo:"+id+"(lat "+cGrafo.getNodo(id).getLatitud()+",lon "+cGrafo.getNodo(id).getLongitud()+")");
-		for(int i=0;i<cGrafo.getNodo(id).getNodosAdyacentes().size();i++){
-			System.out.println("[Nodo: "+id+" --> Nodo Adyacente: "+cGrafo.getNodo(id).getNodosAdyacentes().get(i).getIdA()+" Distancia:"+cGrafo.getNodo(id).calcularDistanciaNodoAdy(cGrafo.getNodo(cGrafo.getNodo(id).getNodosAdyacentes().get(i).getIdA()))+"]\n");
+		for(int i=0;i<cGrafo.getNodo(id).getNodosAdyacentes().size();i++){			
+			System.out.println("[Nodo: "+id+" --> Nodo Adyacente: "+cGrafo.getNodo(id).getNodosAdyacentes().get(i).getIdA()+"]");
 		}					
 	}
 }

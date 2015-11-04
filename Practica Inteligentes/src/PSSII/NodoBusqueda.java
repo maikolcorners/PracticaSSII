@@ -12,7 +12,7 @@ public class NodoBusqueda implements Comparable<NodoBusqueda>{
 		this.estado = estado;
 		this.costo = costo;
 		this.accion = accion;
-		this.profundidad = profundidad;
+		this.profundidad = profundidad;		
 	}
 	public NodoBusqueda getNodoBusq() {
 		return nodoBusq;
@@ -44,7 +44,24 @@ public class NodoBusqueda implements Comparable<NodoBusqueda>{
 	public void setProfundidad(int profundidad) {
 		this.profundidad = profundidad;
 	}
-	public float getValor() {
+	public float getValorE(int estrategia, NodoBusqueda aux) {
+		switch (estrategia) {
+        case 1:  
+        	valor=aux.getProfundidad();
+            break;
+        case 2:  
+        	valor=aux.getProfundidad()-1;
+            break;
+        case 3:  
+        	valor=(float) aux.getCosto();
+            break;
+        case 4:  
+        	
+            break;
+        }		
+		return estrategia;
+	}
+	public float getValor(){
 		return valor;
 	}
 	public void setValor(float valor) {
