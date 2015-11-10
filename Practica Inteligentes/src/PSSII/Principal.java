@@ -1,8 +1,11 @@
 package PSSII;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.LinkedList;
+
 import org.openstreetmap.osmosis.core.container.v0_6.EntityContainer;
 import org.openstreetmap.osmosis.core.domain.v0_6.Entity;
 import org.openstreetmap.osmosis.core.domain.v0_6.Node;
@@ -17,7 +20,11 @@ import org.openstreetmap.osmosis.xml.v0_6.XmlDownloader;
 public class Principal {
 	static CrearGrafo cGrafo = new CrearGrafo();
 	static Problema problema; 
-	static Scanner leer =new Scanner(System.in);
+	static Scanner leer =new Scanner(System.in);	
+	private static double lonmin;
+	private static double latmax;
+	private static double latmin;
+	private static double lonmax;
 	static public void main(String[] args) throws Exception {		
 		Sink sinkImplementation = new Sink() {
 			public void initialize(Map<String, Object> metaData) {
@@ -26,7 +33,7 @@ public class Principal {
 				Nodo nodo;
 				Entity entity = entityContainer.getEntity();				
 				if (entity instanceof Node) {					
-					nodo = new Nodo((Node) entity);
+					nodo = new Nodo(((Node) entity).getId(),((Node) entity).getLatitude(),((Node) entity).getLongitude());
 					cGrafo.getTablaNodos().put(nodo.getId(), nodo);
 				} else if (entity instanceof Way) {
 					Iterator<Tag> it = entity.getTags().iterator();
@@ -73,11 +80,18 @@ public class Principal {
 			}
 
 		};
-		//Tarea 1
-		System.out.println("Descargando mapa del sitio web...");
+		System.out.println("Coordenadas del Espacio de Estado:");
+		System.out.println("Introduzca Latitud Maxima ");
+		latmax=-3.9326000;
+		System.out.println("Introduzca Longitud Minima ");
+		lonmin=38.9836000;
+		System.out.println("Introduzca Latitud Minima: ");
+		latmin=-3.9217000;
+		System.out.println("Introduzca Latitud Maxima: ");
+		lonmax=38.9883900;
 		
 
-		RunnableSource reader = new XmlDownloader(-3.93201,-3.92111, 38.98396, 38.98875,"http://www.openstreetmap.org/api/0.6");
+		RunnableSource reader = new XmlDownloader(latmax,latmin, lonmax, lonmin,"http://www.openstreetmap.org/api/0.6");
 		System.out.println("El mapa ha sido descargado.");
 
 		reader.setSink(sinkImplementation);
@@ -97,23 +111,29 @@ public class Principal {
 		}		
 		
 		System.out.println("Selecciona las siguientes opciones:\n"
-				+ "1.Imprimir datos del Nodo.\n"
-				+ "2.Imprimir ruta entre dos nodos.\n");
+				+ "1.Tarea3.\n"
+				+ "2.Tarea4.\n");
 		int opc=leer.nextInt();
 		switch(opc){
 		case 1:
-			imprimirDatos();
+			tarea3();
 			break;		
 		case 2:
-			solucion();
-			break;
+			tarea4();
+			break;			
 		}	
-	}
-	public static void solucion() throws Exception{
+}
+	public static void tarea4() throws Exception{
 		System.out.print("Id Nodo origen: \n");
-		int nodoO=leer.nextInt();
-		System.out.print("Id Nodo destino: \n");
-		int nodoD=leer.nextInt();
+		long nodoO=leer.nextLong();
+		LinkedList <Nodo>listaNodoR=new LinkedList<Nodo>();	
+		System.out.print("Introduzca el numero de nodo restantes por visitar.\n");
+		int numNR=leer.nextInt();
+		for(int i=0;i<numNR;i++){
+			System.out.print("Id Nodo restante:\n");
+			long nodoD=leer.nextLong();
+			listaNodoR.add(cGrafo.getNodo(nodoD));
+		}	
 		System.out.println("Tipo de estrategia:\n"
 				+ "1.En Anchura.\n"
 				+ "2.En Profundidad.\n"
@@ -122,15 +142,42 @@ public class Principal {
 		System.out.println("Profundidad maxima.\n");
 		int prof=leer.nextInt();		
 		problema=new Problema (cGrafo);
-		problema.Busqueda_Acotada(nodoO, nodoD,problema, prof, estrategia);			
+		Nodo nodo=cGrafo.getNodo(nodoO);
+		System.out.println(cGrafo.getNodo(nodoO).getId()+" "+cGrafo.getNodo(nodoO).getLatitud()+" "+cGrafo.getNodo(nodoO).getLongitud());
+		/*for(int i=0;i<listaNodoR.size();i++){
+			System.out.println(cGrafo.getNodo(listaNodoR.get(i).getId()).getId()+" "+cGrafo.getNodo(listaNodoR.get(i).getId()).getLatitud()+" "+cGrafo.getNodo(listaNodoR.get(i).getId()).getLongitud());
+		}*/
+		Estado estadoinicial=new Estado(cGrafo.getNodo(nodoO),listaNodoR);
+		problema.Busqueda_Acotada(estadoinicial,problema, prof, estrategia);	
+		
 	}	
-	public static void imprimirDatos () throws Exception{		
-		System.out.println("Mostrar los Nodos Adyacentes de un Nodo.");			
-		System.out.println("Introduce id del Nodo");
-		long id=leer.nextLong();
-		System.out.println("Nodo:"+id+"(lat "+cGrafo.getNodo(id).getLatitud()+",lon "+cGrafo.getNodo(id).getLongitud()+")");
-		for(int i=0;i<cGrafo.getNodo(id).getNodosAdyacentes().size();i++){			
-			System.out.println("[Nodo: "+id+" --> Nodo Adyacente: "+cGrafo.getNodo(id).getNodosAdyacentes().get(i).getIdA()+"]");
-		}					
+	public static void tarea3() throws Exception{	
+		System.out.print("Id Nodo origen: \n");
+		long nodoO=leer.nextLong();
+		LinkedList <Long>listaNodoR=new LinkedList<Long>();	
+		System.out.print("Introduzca el numero de nodo restantes por visitar.\n");
+		int numNR=leer.nextInt();
+		for(int i=0;i<numNR;i++){
+			System.out.print("Id Nodo restante:\n");
+			long nodoD=leer.nextLong();
+			listaNodoR.add(nodoD);
+		}
+
+		Problema p=new Problema (cGrafo);		
+		LinkedList<Nodo> nodoR=new LinkedList<Nodo>();
+		for(int i=0;i<listaNodoR.size();i++){
+			nodoR.add(cGrafo.getNodo(listaNodoR.get(i)));
+		}
+		Estado estadoinicial=new Estado(cGrafo.getNodo(nodoO),nodoR);
+		LinkedList <Estado>sucesores=p.suc(estadoinicial);		
+		
+		for(int i=0;i<sucesores.size();i++){	
+			System.out.print("Nodo origen: "+nodoO+" --> ["+sucesores.get(i).getIdO().getId()+",[");
+			for(int j=0;j<sucesores.get(i).getIdD().size();j++){	
+				System.out.print(" "+sucesores.get(i).getIdD().get(j).getId()+" ");
+			}
+			System.out.println("]],"+cGrafo.getNodo(nodoO).getNodosAdyacentes().get(i).getDistancia()+"");
+		}
+		
 	}
 }

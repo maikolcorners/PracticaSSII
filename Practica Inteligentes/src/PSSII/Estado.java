@@ -1,30 +1,25 @@
 package PSSII;
 
+import java.util.LinkedList;
+
 public class Estado {
-	private long id;
-	private double latitud;
-	private double longitud;
-	public Estado(long id, double latitud, double longitud) {		
-		this.id = id;
-		this.latitud = latitud;
-		this.longitud = longitud;
+	private Nodo idO;
+	private LinkedList <Nodo>idD=new LinkedList<Nodo>();
+	public Estado(Nodo idO, LinkedList <Nodo>idD) {		
+		this.idO = idO;
+		this.idD=idD;	
 	}
-	public long getId() {
-		return id;
+	public Nodo getIdO() {
+		return idO;
 	}
-	public void setId(long id) {
-		this.id = id;
+	public void setIdO(Nodo idO) {
+		this.idO = idO;
 	}
-	public double getLatitud() {
-		return latitud;
+	public LinkedList<Nodo> getIdD() {
+		return idD;
 	}
-	public void setLatitud(double latitud) {
-		this.latitud = latitud;
+	public void setIdD(LinkedList<Nodo> idD) {
+		this.idD = idD;
 	}
-	public double getLongitud() {
-		return longitud;
-	}
-	public void setLongitud(double longitud) {
-		this.longitud = longitud;
-	}
+	
 }

@@ -50,7 +50,7 @@ public class NodoBusqueda implements Comparable<NodoBusqueda>{
         	valor=aux.getProfundidad();
             break;
         case 2:  
-        	valor=aux.getProfundidad()-1;
+        	valor=-aux.getProfundidad();
             break;
         case 3:  
         	valor=(float) aux.getCosto();
