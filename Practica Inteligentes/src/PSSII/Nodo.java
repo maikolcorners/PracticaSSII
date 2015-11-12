@@ -56,11 +56,11 @@ public class Nodo {
 		  double y = 0-r_major*Math.log(ts);
 		  return y;
 	}
-	public double calcularDistanciaNodoAdy(Nodo nodoA){
+	public double calcularDistanciaNodoAdy(Nodo nodo){
 		double x1 = merc_x(getLongitud());
-		double x2 = merc_x(nodoA.getLongitud());
+		double x2 = merc_x(nodo.getLongitud());
 		double y1 = merc_y(getLatitud());
-		double y2 = merc_y(nodoA.getLatitud());
+		double y2 = merc_y(nodo.getLatitud());
 		return Math.sqrt(Math.pow((x1-x2), 2)+Math.pow((y1-y2), 2));
 	}	
 }

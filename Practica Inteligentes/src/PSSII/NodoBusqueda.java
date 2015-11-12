@@ -44,7 +44,7 @@ public class NodoBusqueda implements Comparable<NodoBusqueda>{
 	public void setProfundidad(int profundidad) {
 		this.profundidad = profundidad;
 	}
-	public float getValorE(int estrategia, NodoBusqueda aux) {
+	public float getValorE(int estrategia, NodoBusqueda aux, Estado estado) {
 		switch (estrategia) {
         case 1:  
         	valor=aux.getProfundidad();
@@ -56,8 +56,27 @@ public class NodoBusqueda implements Comparable<NodoBusqueda>{
         	valor=(float) aux.getCosto();
             break;
         case 4:  
-        	
+        	/*if(aux.getProfundidad()<=profundidadMax){
+        		valor=-aux.getProfundidad();
+        	}*/
+        	break;
+        /*case 5:          	
+    		double lat, lon;
+    		for(int i=0;i<estado.getIdD().size();i++){
+    			lat=estado.getIdD().get(i).getLatitud();
+    			lon=estado.getIdD().get(i).getLongitud();
+    			valor=(float) aux.getEstado().getIdO().calcularDistanciaNodoAdy(lat,lon);
+    		}    		
             break;
+        case 6:          	
+    		double lat1, lon1;
+    		for(int i=0;i<estado.getIdD().size();i++){
+    			lat1=estado.getIdD().get(i).getLatitud();
+    			lon1=estado.getIdD().get(i).getLongitud();
+    			valor=(float) aux.getEstado().getIdO().calcularDistanciaNodoAdy(lat1,lon1);
+    			valor=(float) (valor+aux.getCosto());
+    		}    		
+            break;*/
         }		
 		return estrategia;
 	}
