@@ -56,8 +56,18 @@ public class ImprimirSolucion {
 		salida.writeBytes("\n\nEstado --> Id Nodo Coordenadas: (Latitud Nodo, Longitud Nodo)");
 		while (!solucion.isEmpty()) {
 			nodo = solucion.pop();
-			salida.writeBytes("\n\nEstado --> " + nodo.getEstado().getIdO().getId() + " Coordenadas: ("
-					+ nodo.getEstado().getIdO().getLatitud() + ", " + nodo.getEstado().getIdO().getLongitud() + ")");
+			salida.writeBytes("\n\nEstado --> (" + nodo.getEstado().getIdO().getId());
+			for(int i=0;i<nodo.getEstado().getIdD().size();i++){
+				if(i==0){
+					salida.writeBytes("[");
+				}
+				if(i<nodo.getEstado().getIdD().size()-1){
+					salida.writeBytes(nodo.getEstado().getIdD().get(i).getId()+",");
+				}else{
+					salida.writeBytes(nodo.getEstado().getIdD().get(i).getId()+"]");
+				}				
+			}
+			salida.writeBytes(")");
 		}
 
 		id_Destino = nodo.getEstado().getIdO().getId();
