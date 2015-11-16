@@ -86,13 +86,13 @@ public class Principal {
 		};
 		System.out.println("Coordenadas del Espacio de Estado:");
 		System.out.println("Introduzca Latitud Maxima ");
-		latmax = -3.9326000;
+		latmax = -3.9353;
 		System.out.println("Introduzca Longitud Minima ");
-		lonmin = 38.9836000;
+		lonmin = 38.9797;
 		System.out.println("Introduzca Latitud Minima: ");
-		latmin = -3.9217000;
+		latmin = -3.9197;
 		System.out.println("Introduzca Latitud Maxima: ");
-		lonmax = 38.9883900;
+		lonmax = 38.9934;
 
 		RunnableSource reader = new XmlDownloader(latmax, latmin, lonmax, lonmin,
 				"http://www.openstreetmap.org/api/0.6");
@@ -153,7 +153,7 @@ public class Principal {
 		Stack<NodoBusqueda> solucion = problema.Busqueda_Acotada(estadoinicial, problema, prof, estrategia);
 		tiempo = System.nanoTime() - tini;
 		ImprimirSolucion iS = new ImprimirSolucion(solucion, estrategia, prof);
-		iS.generargpx(tiempo);
+		iS.generartxt(tiempo);
 	}
 
 	public static void tarea4(long nodoO, LinkedList<Nodo> listaNodoR) throws Exception {
@@ -167,7 +167,7 @@ public class Principal {
 		Estado estadoinicial = new Estado(cGrafo.getNodo(nodoO), listaNodoR);
 		Stack<NodoBusqueda> solucion = problema.Busqueda_Acotada(estadoinicial, problema, prof, estrategia);
 		ImprimirSolucion iS = new ImprimirSolucion(solucion, estrategia, prof);
-		iS.generartxt();
+		iS.generartxt(tiempo);
 
 	}
 

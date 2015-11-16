@@ -21,5 +21,21 @@ public class Estado {
 	public void setIdD(LinkedList<Nodo> idD) {
 		this.idD = idD;
 	}
+	public String toString(){
+		String a="(" + idO.getId();
+		for(int i=0;i<idD.size();i++){
+			if(i==0){
+				a=a+"[";
+			}
+			if(i<idD.size()-1){
+				a=a+idD.get(i).getId()+",";
+			}else{
+				a=a+idD.get(i).getId()+"]";
+			}				
+		}
+		a=a+")";
+		return a;
+	}
+	
 	
 }

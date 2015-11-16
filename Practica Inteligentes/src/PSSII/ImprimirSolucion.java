@@ -40,7 +40,7 @@ public class ImprimirSolucion {
 
 	public void setSolucion(Stack<NodoBusqueda> solucion) {
 		this.solucion = solucion;
-	}public void generartxt() throws IOException {
+	}public void generartxt(long tiempo) throws IOException {
 
 		long id_Origen, id_Destino;
 		double costo;
@@ -80,6 +80,7 @@ public class ImprimirSolucion {
 		salida.writeBytes("\nProfundidad Maxima:   " + max_prof + ".");
 		salida.writeBytes("\nCoste de la Solucion: " + costo + " metros.");
 		salida.writeBytes("\nComplejidad Espacial: " + num_nodos + " nodos.");
+		salida.writeBytes("\nComplejidad Temporal: " + tiempo + " nanosegundos</ele>");
 		salida.close();
 		System.out.println("Se ha generado correctamente el fichero .txt");
 	}

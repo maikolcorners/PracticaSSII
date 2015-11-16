@@ -60,23 +60,17 @@ public class NodoBusqueda implements Comparable<NodoBusqueda>{
         		valor=-aux.getProfundidad();
         	}*/
         	break;
-        /*case 5:          	
-    		double lat, lon;
-    		for(int i=0;i<estado.getIdD().size();i++){
-    			lat=estado.getIdD().get(i).getLatitud();
-    			lon=estado.getIdD().get(i).getLongitud();
-    			valor=(float) aux.getEstado().getIdO().calcularDistanciaNodoAdy(lat,lon);
+        case 5:    		
+    		for(int i=0;i<estado.getIdD().size();i++){    			
+    			valor=(float) aux.getEstado().getIdO().calcularDistanciaNodoAdy(estado.getIdD().get(i));
     		}    		
             break;
-        case 6:          	
-    		double lat1, lon1;
-    		for(int i=0;i<estado.getIdD().size();i++){
-    			lat1=estado.getIdD().get(i).getLatitud();
-    			lon1=estado.getIdD().get(i).getLongitud();
-    			valor=(float) aux.getEstado().getIdO().calcularDistanciaNodoAdy(lat1,lon1);
+        case 6:  		
+    		for(int i=0;i<estado.getIdD().size();i++){    			
+    			valor=(float) aux.getEstado().getIdO().calcularDistanciaNodoAdy(estado.getIdD().get(i));
     			valor=(float) (valor+aux.getCosto());
     		}    		
-            break;*/
+            break;
         }		
 		return estrategia;
 	}
