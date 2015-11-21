@@ -30,12 +30,7 @@ public class Problema {
 			nodoHijo.getValorE(estrategia, nodoPadre, estado);
 			listaNodos.add(nodoHijo);
 
-		} // Prueba
-		/*
-		 * for(int i=0;i<listaNodos.size();i++){
-		 * tablaPoda.put(listaNodos.get(i).getEstado().toString(),
-		 * listaNodos.get(i).getCosto()); }//Prueba
-		 */
+		}
 		return listaNodos;
 	}
 
@@ -63,7 +58,16 @@ public class Problema {
 		return ok;
 	}
 
-	public Stack<NodoBusqueda> Busqueda_Acotada(Estado estado, Problema problema, int max_prof, int estrategia)
+	public Stack<NodoBusqueda> Busqueda(Estado estado, Problema problema,int inc_prof ,int max_prof, int estrategia, boolean hacerpoda) throws Exception{
+		int actual_prof=inc_prof;
+		Stack<NodoBusqueda> solucion = null;
+		while(solucion==null&&actual_prof<=max_prof){
+			solucion=Busqueda_Acotada(estado, problema,actual_prof, estrategia, hacerpoda);
+			actual_prof=actual_prof+inc_prof;
+		}
+		return solucion;
+	}	
+	public Stack<NodoBusqueda> Busqueda_Acotada(Estado estado, Problema problema, int max_prof, int estrategia,boolean hacerpoda)
 			throws Exception {
 
 		try {
@@ -81,16 +85,16 @@ public class Problema {
 				else if (nodoActual.getProfundidad() < max_prof) {
 					listaSucesores = ee.suc(nodoActual.getEstado());
 					listaNodos = CrearListaNodos(nodoActual, listaSucesores, estrategia);
-					if (poda(listaNodos)) {
+					if (poda(listaNodos)&&hacerpoda) {
 						for (int i = 0; i < listaNodos.size(); i++) {
 							if (tablaPoda.get(listaNodos.get(i).getEstado().toString()) < listaNodos.get(i).getValor())
 								listaNodos.remove(i);
 						}
 
-					}
-					// Prueba*/
+					}//Poda*/
+					frontera.insertarLista(listaNodos);
 				}
-				frontera.insertarLista(listaNodos);
+				
 			}
 			if (solucion)
 				rutaSolucion = CrearSolucion(nodoActual);

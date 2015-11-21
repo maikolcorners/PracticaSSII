@@ -21,10 +21,10 @@ public class Principal {
 	static CrearGrafo cGrafo = new CrearGrafo();
 	static Problema problema;
 	static Scanner leer = new Scanner(System.in);
-	private static double lonmin;
-	private static double latmax;
-	private static double latmin;
-	private static double lonmax;
+	private static double lonOeste;
+	private static double latNorte;
+	private static double latSur;
+	private static double lonEste;
 	private static long tini;
 	private static long tiempo;
 
@@ -85,16 +85,17 @@ public class Principal {
 
 		};
 		System.out.println("Coordenadas del Espacio de Estado:");
-		System.out.println("Introduzca Latitud Maxima ");
-		latmax = -3.9353;
-		System.out.println("Introduzca Longitud Minima ");
-		lonmin = 38.9797;
-		System.out.println("Introduzca Latitud Minima: ");
-		latmin = -3.9197;
-		System.out.println("Introduzca Latitud Maxima: ");
-		lonmax = 38.9934;
+		System.out.println("Introduzca Longitud Oeste ");
+		lonOeste = -3.9353;
+		System.out.println("Introduzca Longitud Este ");
+		lonEste = -3.9197;
+		System.out.println("Introduzca Latitud Norte: ");
+		latNorte = 38.9934;
+		System.out.println("Introduzca Latitud Sur: ");
+		latSur = 38.9797;
+		
 
-		RunnableSource reader = new XmlDownloader(latmax, latmin, lonmax, lonmin,
+		RunnableSource reader = new XmlDownloader(lonOeste, lonEste, latNorte, latSur,
 				"http://www.openstreetmap.org/api/0.6");
 		System.out.println("El mapa ha sido descargado.");
 
@@ -144,35 +145,65 @@ public class Principal {
 		System.out.println("Tipo de estrategia:\n" + "1.En Anchura.\n" + "2.En Profundidad.\n" + "3.En Costo.\n"
 				+ "4.En Profundida Iterativa.\n" + "5.En Voraz.\n" + "6.A*\n");
 		int estrategia = leer.nextInt();
-		System.out.println("Profundidad maxima.\n");
+		System.out.println("Profundidad Iterativa.\n");
+		int inc = leer.nextInt();
+		System.out.println("Profundidad Maxima.\n");
 		int prof = leer.nextInt();
-		EspacioEstados ee = new EspacioEstados(cGrafo, latmax, latmin, lonmax, lonmin);
+		boolean hacerpoda=true;
+		System.out.println("¿Desea realizar poda?.\n"
+				+ "1.Si\n"
+				+ "2.No\n");
+		int poda = leer.nextInt();
+		switch (poda) {
+		case 1:
+			hacerpoda=true;
+			break;
+		case 2:
+			hacerpoda=false;
+			break;	
+		}	
+		EspacioEstados ee = new EspacioEstados(cGrafo, lonOeste, lonEste, latNorte, latSur);
 		problema = new Problema(ee);
 		Estado estadoinicial = new Estado(cGrafo.getNodo(nodoO), listaNodoR);
 		tini = System.nanoTime();
-		Stack<NodoBusqueda> solucion = problema.Busqueda_Acotada(estadoinicial, problema, prof, estrategia);
-		tiempo = System.nanoTime() - tini;
+		Stack<NodoBusqueda> solucion = problema.Busqueda(estadoinicial, problema,inc, prof, estrategia,hacerpoda);
+		tiempo = System.nanoTime() - tini;		
 		ImprimirSolucion iS = new ImprimirSolucion(solucion, estrategia, prof);
-		iS.generartxt(tiempo);
+		iS.generargpx(tiempo);
 	}
 
 	public static void tarea4(long nodoO, LinkedList<Nodo> listaNodoR) throws Exception {
 		System.out.println("Tipo de estrategia:\n" + "1.En Anchura.\n" + "2.En Profundidad.\n" + "3.En Costo.\n"
 				+ "4.En Profundida Iterativa.\n");
 		int estrategia = leer.nextInt();
-		System.out.println("Profundidad maxima.\n");
+		System.out.println("Profundidad Iterativa.\n");
+		int inc = leer.nextInt();
+		System.out.println("Profundidad Maxima.\n");
 		int prof = leer.nextInt();
-		EspacioEstados ee = new EspacioEstados(cGrafo, latmax, latmin, lonmax, lonmin);
+		boolean hacerpoda=true;
+		System.out.println("¿Desea realizar poda?.\n"
+				+ "1.Si\n"
+				+ "2.No\n");
+		int poda = leer.nextInt();
+		switch (poda) {
+		case 1:
+			hacerpoda=true;
+			break;
+		case 2:
+			hacerpoda=false;
+			break;	
+		}
+		EspacioEstados ee = new EspacioEstados(cGrafo, lonOeste, lonEste, latNorte, latSur);
 		problema = new Problema(ee);
 		Estado estadoinicial = new Estado(cGrafo.getNodo(nodoO), listaNodoR);
-		Stack<NodoBusqueda> solucion = problema.Busqueda_Acotada(estadoinicial, problema, prof, estrategia);
+		Stack<NodoBusqueda> solucion = problema.Busqueda(estadoinicial, problema,inc, prof, estrategia,hacerpoda);
 		ImprimirSolucion iS = new ImprimirSolucion(solucion, estrategia, prof);
 		iS.generartxt(tiempo);
 
 	}
 
 	public static void tarea3(long nodoO, LinkedList<Nodo> listaNodoR) throws Exception {
-		EspacioEstados ee = new EspacioEstados(cGrafo, latmax, latmin, lonmax, lonmin);
+		EspacioEstados ee = new EspacioEstados(cGrafo, lonOeste, lonEste, latNorte, latSur);
 
 		LinkedList<Nodo> nodoR = new LinkedList<Nodo>();
 		for (int i = 0; i < listaNodoR.size(); i++) {

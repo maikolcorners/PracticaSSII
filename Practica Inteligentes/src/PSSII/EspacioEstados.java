@@ -3,17 +3,17 @@ package PSSII;
 import java.util.LinkedList;
 
 public class EspacioEstados {
-	private double latmax;
-	private double latmin;
-	private double lonmax;
-	private double lonmin;
+	private double lonOeste;
+	private double lonEste;
+	private double latNorte;
+	private double latSur;
 	private CrearGrafo cG;
-	public EspacioEstados(CrearGrafo cG,double latmax, double latmin, double lonmax, double lonmin) {		
+	public EspacioEstados(CrearGrafo cG,double lonOeste, double lonEste, double latNorte, double latSur) {		
 		this.cG=cG;
-		this.latmax = latmax;
-		this.latmin = latmin;
-		this.lonmax = lonmax;
-		this.lonmin = lonmin;
+		this.lonOeste = lonOeste;
+		this.lonEste = lonEste;
+		this.latNorte = latNorte;
+		this.latSur = latSur;
 	}
 	public CrearGrafo getcG() {
 		return cG;
@@ -21,29 +21,29 @@ public class EspacioEstados {
 	public void setcG(CrearGrafo cG) {
 		this.cG = cG;
 	}
-	public double getLatmax() {
-		return latmax;
+	public double getlonOeste() {
+		return lonOeste;
 	}
-	public void setLatmax(double latmax) {
-		this.latmax = latmax;
+	public void setlonOeste(double lonOeste) {
+		this.lonOeste = lonOeste;
 	}
-	public double getLatmin() {
-		return latmin;
+	public double getlonEste() {
+		return lonEste;
 	}
-	public void setLatmin(double latmin) {
-		this.latmin = latmin;
+	public void setlonEste(double lonEste) {
+		this.lonEste = lonEste;
 	}
-	public double getLonmax() {
-		return lonmax;
+	public double getlatNorte() {
+		return latNorte;
 	}
-	public void setLonmax(double lonmax) {
-		this.lonmax = lonmax;
+	public void setlatNorte(double latNorte) {
+		this.latNorte = latNorte;
 	}
-	public double getLonmin() {
-		return lonmin;
+	public double getlatSur() {
+		return latSur;
 	}
-	public void setLonmin(double lonmin) {
-		this.lonmin = lonmin;
+	public void setlatSur(double latSur) {
+		this.latSur = latSur;
 	}
 	public LinkedList<Estado> suc(Estado es) {
 		LinkedList<NodoAdyacente> v = es.getIdO().getNodosAdyacentes();
