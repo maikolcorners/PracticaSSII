@@ -8,22 +8,23 @@ public class ImprimirSolucion {
 	Stack<NodoBusqueda> solucion;
 	private String estrategia;
 	private int max_prof;
+	private String poda;
 
-	public ImprimirSolucion(Stack<NodoBusqueda> solucion, int srtEstrategia, int max_prof) {
+	public ImprimirSolucion(Stack<NodoBusqueda> solucion, int srtEstrategia, int max_prof, String poda) {
 		this.solucion = solucion;
 		switch (srtEstrategia) {
 		case 1:
 			this.estrategia = "Anchura";
 			break;
 		case 2:
-			this.estrategia = "Profundidad";
+			this.estrategia = "Profundidad Acotada";
 			break;
 		case 3:
-			this.estrategia = "Costo";
-			break;
-		case 4:
 			this.estrategia = "Profundidad Iterativa";
 			break;
+		case 4:
+			this.estrategia = "Costo";
+			break;		
 		case 5:
 			this.estrategia = "Voraz";
 			break;
@@ -32,6 +33,7 @@ public class ImprimirSolucion {
 			break;
 		}
 		this.max_prof = max_prof;
+		this.poda=poda;
 	}
 
 	public Stack<NodoBusqueda> getSolucion() {
@@ -43,17 +45,15 @@ public class ImprimirSolucion {
 	}
 
 	public void generartxt(long tiempo) throws IOException {
+		NodoBusqueda nodo;
+		RandomAccessFile salida = null;
+		salida = new RandomAccessFile("solucion.txt", "rw");
 		if (solucion != null) {
-
 			long id_Origen, id_Objetivo[];
 			id_Objetivo = new long[solucion.peek().getEstado().getIdD().size()];
 			double costo;
 			int num_nodos;
-
-			NodoBusqueda nodo;
-			RandomAccessFile salida = null;
-			salida = new RandomAccessFile("solucion.txt", "rw");
-			int contador = 0;
+			int contador = 0;			
 			num_nodos = solucion.size();
 			nodo = solucion.peek();
 			id_Origen = nodo.getEstado().getIdO().getId();
@@ -76,7 +76,7 @@ public class ImprimirSolucion {
 					}
 				}
 				salida.writeBytes(")");
-				contador++;
+				contador++;				
 			}
 
 			costo = nodo.getCosto();
@@ -86,15 +86,17 @@ public class ImprimirSolucion {
 			for (int i = 0; i < id_Objetivo.length; i++) {
 				salida.writeBytes("\nNodo Objetivo: " + id_Objetivo[i] + ".");
 			}
+			salida.writeBytes("\n"+poda+ " poda.");
 			salida.writeBytes("\nEstrategia:   " + estrategia + ".");
-			salida.writeBytes("\nProfundidad Maxima:   " + max_prof + ".");
+			salida.writeBytes("\nProfundidad Maxima:   " + max_prof + ".");			
 			salida.writeBytes("\nCoste de la Solucion: " + costo + " metros.");
 			salida.writeBytes("\nComplejidad Espacial: " + num_nodos + " nodos.");
-			salida.writeBytes("\nComplejidad Temporal: " + tiempo + " nanosegundos</ele>");
+			salida.writeBytes("\nComplejidad Temporal: " + (double)tiempo/1000000000 + " segundos.");
 			salida.close();
 			System.out.println("Se ha generado correctamente el fichero .txt");
 		} else {
-			System.out.println("No se ha encontrado solucion");
+			salida.writeBytes("No se ha encontrado solucion");
+			System.out.println("Se ha generado correctamente el fichero .txt");
 		}
 	}
 

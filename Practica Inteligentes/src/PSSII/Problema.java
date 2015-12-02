@@ -80,9 +80,9 @@ public class Problema {
 
 			while (!solucion && frontera.getNodosFrontera().size() != 0) {
 				nodoActual = frontera.getPrimerN();
-				if (Estado_Meta(nodoActual.getEstado()))
+				if (Estado_Meta(nodoActual.getEstado())){
 					solucion = true;
-				else if (nodoActual.getProfundidad() < max_prof) {
+				}else if (nodoActual.getProfundidad() < max_prof){					
 					listaSucesores = ee.suc(nodoActual.getEstado());
 					listaNodos = CrearListaNodos(nodoActual, listaSucesores, estrategia);
 					if (poda(listaNodos)&&hacerpoda) {
@@ -93,8 +93,7 @@ public class Problema {
 
 					}//Poda*/
 					frontera.insertarLista(listaNodos);
-				}
-				
+				}				
 			}
 			if (solucion)
 				rutaSolucion = CrearSolucion(nodoActual);

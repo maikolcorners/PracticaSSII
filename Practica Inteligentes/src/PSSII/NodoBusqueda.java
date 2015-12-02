@@ -1,5 +1,7 @@
 package PSSII;
 
+
+
 public class NodoBusqueda implements Comparable<NodoBusqueda>{
 	NodoBusqueda nodoBusq;
 	private Estado estado;
@@ -44,33 +46,39 @@ public class NodoBusqueda implements Comparable<NodoBusqueda>{
 	public void setProfundidad(int profundidad) {
 		this.profundidad = profundidad;
 	}
-	public float getValorE(int estrategia, NodoBusqueda aux, Estado estado) {		
-		switch (estrategia) {
+	public float getValorE(int estrategia, NodoBusqueda aux, Estado estado) {			
+		switch (estrategia) {		
         case 1:  
         	valor=aux.getProfundidad();
             break;
         case 2:  
         	valor=-aux.getProfundidad();
             break;
-        case 3:  
-        	valor=(float) aux.getCosto();
-            break;
-        case 4:
+        case 3:
         	valor=-aux.getProfundidad();        	
         	break;
-        case 5:    		
-    		for(int i=0;i<estado.getIdD().size();i++){    			
-    			valor=(float) aux.getEstado().getIdO().calcularDistanciaNodoAdy(estado.getIdD().get(i));
-    		}     		
+        case 4:  
+        	valor=(float) aux.getCosto();
+            break;               
+        case 5:   		 
+    		valor=heuristica(aux,estado);
             break;
-        case 6:  		
-    		for(int i=0;i<estado.getIdD().size();i++){    	
-        		valor=(float) aux.getEstado().getIdO().calcularDistanciaNodoAdy(estado.getIdD().peekLast());
-    			valor=(float) (valor+aux.getCosto());
-    		}    		
+        case 6:     		    		
+    		valor=(float) (heuristica(aux,estado)+aux.getCosto());
             break;
         }		
 		return estrategia;
+	}
+	public Float heuristica(NodoBusqueda aux,Estado estado){
+		float aux1=0;
+		float valor=0;
+		for(int i=0;i<estado.getIdD().size();i++){    	
+    		valor=(float) aux.getEstado().getIdO().calcularDistanciaNodoAdy(estado.getIdD().get(i));
+    		if(aux1<valor){
+				aux1=valor;
+			}	
+		}
+		return aux1;
 	}
 	public float getValor(){
 		return valor;
@@ -78,11 +86,19 @@ public class NodoBusqueda implements Comparable<NodoBusqueda>{
 	public void setValor(float valor) {
 		this.valor = valor;
 	}
-	@Override
-	public int compareTo(NodoBusqueda nodo){
-		int v = -1;
-		if (valor > nodo.getValor())
+	
+	public int compareTo(NodoBusqueda nodo){		
+		/*int v;
+		if(valor<nodo.getValor())
+			v= -1;
+		else if (valor > nodo.getValor())
 			v = 1;
+		else 
+			v=0;*/
+		int v=-1;
+		if(valor>nodo.getValor()){
+			v=1;
+		}
 		return v;
 	}
 }

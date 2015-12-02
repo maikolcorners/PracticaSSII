@@ -4,9 +4,10 @@ import java.util.PriorityQueue;
 
 
 
+
 public class Frontera {
-	private PriorityQueue<NodoBusqueda>nodosFrontera=new PriorityQueue<NodoBusqueda>();
-	public Frontera() {
+	private PriorityQueue<NodoBusqueda>nodosFrontera=new PriorityQueue<NodoBusqueda>();	
+	public Frontera() {		
 	}		
 	public void limpiar() {
 		nodosFrontera.clear();

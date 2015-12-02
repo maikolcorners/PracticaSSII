@@ -52,7 +52,7 @@ public class Principal {
 							highway = t.getValue();
 					}
 					if (highway.equals("pedestrian") || highway.equals("trunk") || highway.equals("residential")) {
-						addEnlace((Way) entity, info); // Tarea 2
+						addEnlace((Way) entity, info); 
 					}
 				}
 			}
@@ -86,13 +86,13 @@ public class Principal {
 		};
 		System.out.println("Coordenadas del Espacio de Estado:");
 		System.out.println("Introduzca Longitud Oeste ");
-		lonOeste = -3.9353;
+		lonOeste = -3.9471;//-3.92790;//-3.9611;//-3.9353;
 		System.out.println("Introduzca Longitud Este ");
-		lonEste = -3.9197;
+		lonEste = -3.9112;//-3.92246;//-3.8739;//-3.9197;
 		System.out.println("Introduzca Latitud Norte: ");
-		latNorte = 38.9934;
+		latNorte = 38.9997;//38.99180;//39.0056;//38.9934;
 		System.out.println("Introduzca Latitud Sur: ");
-		latSur = 38.9797;
+		latSur = 38.9672;//38.98737;//38.9664;//38.9797;
 		
 
 		RunnableSource reader = new XmlDownloader(lonOeste, lonEste, latNorte, latSur,
@@ -105,28 +105,43 @@ public class Principal {
 		System.out.println("Se estan procesando los datos del archivo xml...");
 		readerThread.start();
 		System.out.println("Comenzamos");
-		// Fin Tarea 1
+		
 
 		while (readerThread.isAlive()) {
 			try {
 				readerThread.join();
 			} catch (InterruptedException e) {
-				/* No hacer nada */
+				
 			}
 		}
 		System.out.println("Selecciona las siguientes opciones:\n" + "1.Tarea3.\n" + "2.Tarea4.\n" + "3.Tarea5.\n");
-		int opc = leer.nextInt();
+		int opc = 3;//leer.nextInt();
 
 		System.out.print("Id Nodo origen: \n");
-		long nodoO = leer.nextLong();
+		long nodoO = 519006740;//803292756;//leer.nextLong();
 		LinkedList<Nodo> listaNodoR = new LinkedList<Nodo>();
 		System.out.print("Introduzca el numero de nodos objetivos.\n");
-		int numNR = leer.nextInt();
-		for (int i = 0; i < numNR; i++) {
+		//int numNR = 2;//leer.nextInt();
+		/*for (int i = 0; i < numNR; i++) {
 			System.out.print("Id Nodo Objetivo:\n");
 			long nodoD = leer.nextLong();
 			listaNodoR.add(cGrafo.getNodo(nodoD));
-		}
+		}*/
+		long nodoD = 803292809;//812955140;//leer.nextLong();
+		listaNodoR.add(cGrafo.getNodo(nodoD));
+		nodoD = 812954436;//803292720;//leer.nextLong();
+		listaNodoR.add(cGrafo.getNodo(nodoD));
+		nodoD = 803292210;//504665906;//leer.nextLong();
+		listaNodoR.add(cGrafo.getNodo(nodoD));
+		//nodoD = 803292445;//leer.nextLong();
+		//listaNodoR.add(cGrafo.getNodo(nodoD));
+		//nodoD = 801317951;//leer.nextLong();
+		//listaNodoR.add(cGrafo.getNodo(nodoD));
+		//nodoD = 814770952;//leer.nextLong();
+		//listaNodoR.add(cGrafo.getNodo(nodoD));
+		//long nodoD = 1778319365;//801317858;//801797115;//leer.nextLong();
+		//listaNodoR.add(cGrafo.getNodo(nodoD));
+
 
 		switch (opc) {
 		case 1:
@@ -142,24 +157,31 @@ public class Principal {
 	}
 
 	public static void tarea5(long nodoO, LinkedList<Nodo> listaNodoR) throws Exception {
-		System.out.println("Tipo de estrategia:\n" + "1.En Anchura.\n" + "2.En Profundidad.\n" + "3.En Costo.\n"
-				+ "4.En Profundida Iterativa.\n" + "5.En Voraz.\n" + "6.A*\n");
+		System.out.println("Tipo de estrategia:\n"+
+				"1.En Anchura.\n" +
+				"2.En Profundida Acotada.\n"+
+				"3.En Profundida Iterativa.\n"+
+				"4.En Costo.\n"+ 				
+				"5.En Voraz.\n" +
+				"6.A*\n");
 		int estrategia = leer.nextInt();
 		System.out.println("Profundidad Iterativa.\n");
-		int inc = leer.nextInt();
+		int inc = 500000000;//leer.nextInt();
 		System.out.println("Profundidad Maxima.\n");
-		int prof = leer.nextInt();
+		int prof = 500000000;//leer.nextInt();
 		boolean hacerpoda=true;
 		System.out.println("¿Desea realizar poda?.\n"
 				+ "1.Si\n"
 				+ "2.No\n");
 		int poda = leer.nextInt();
+		String podaA="";
 		switch (poda) {
 		case 1:
 			hacerpoda=true;
+			podaA="Con";
 			break;
 		case 2:
-			hacerpoda=false;
+			podaA="Sin";
 			break;	
 		}	
 		EspacioEstados ee = new EspacioEstados(cGrafo, lonOeste, lonEste, latNorte, latSur);
@@ -167,9 +189,9 @@ public class Principal {
 		Estado estadoinicial = new Estado(cGrafo.getNodo(nodoO), listaNodoR);
 		tini = System.nanoTime();
 		Stack<NodoBusqueda> solucion = problema.Busqueda(estadoinicial, problema,inc, prof, estrategia,hacerpoda);
-		tiempo = System.nanoTime() - tini;		
-		ImprimirSolucion iS = new ImprimirSolucion(solucion, estrategia, prof);
-		iS.generargpx(tiempo);
+		tiempo = System.nanoTime() - tini;			
+		ImprimirSolucion iS = new ImprimirSolucion(solucion, estrategia,prof,podaA);
+		iS.generartxt(tiempo);		
 	}
 
 	public static void tarea4(long nodoO, LinkedList<Nodo> listaNodoR) throws Exception {
@@ -185,19 +207,22 @@ public class Principal {
 				+ "1.Si\n"
 				+ "2.No\n");
 		int poda = leer.nextInt();
+		String podaA="";
 		switch (poda) {
 		case 1:
 			hacerpoda=true;
+			podaA="Con";
 			break;
 		case 2:
 			hacerpoda=false;
+			podaA="Sin";
 			break;	
 		}
 		EspacioEstados ee = new EspacioEstados(cGrafo, lonOeste, lonEste, latNorte, latSur);
 		problema = new Problema(ee);
 		Estado estadoinicial = new Estado(cGrafo.getNodo(nodoO), listaNodoR);
 		Stack<NodoBusqueda> solucion = problema.Busqueda(estadoinicial, problema,inc, prof, estrategia,hacerpoda);
-		ImprimirSolucion iS = new ImprimirSolucion(solucion, estrategia, prof);
+		ImprimirSolucion iS = new ImprimirSolucion(solucion, estrategia, prof,podaA);
 		iS.generartxt(tiempo);
 
 	}
