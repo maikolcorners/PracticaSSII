@@ -8,10 +8,12 @@ public class Problema {
 	private Frontera frontera;
 	private EspacioEstados ee;
 	private Hashtable<String, Float> tablaPoda = new Hashtable<String, Float>();
+	private long complejidadE;
 
 	public Problema(EspacioEstados ee) {
 		this.ee = ee;
 		frontera = new Frontera();
+		this.complejidadE=0;
 	}
 
 	public LinkedList<NodoBusqueda> CrearListaNodos(NodoBusqueda nodoPadre, LinkedList<Estado> listaSucesores,
@@ -27,6 +29,7 @@ public class Problema {
 					nodoPadre.getCosto() + nodoPadre.getEstado().getIdO().getNodosAdyacentes().get(i).getDistancia(),
 					nodoPadre.getEstado().getIdO().getNodosAdyacentes().get(i).getInformacion(),
 					nodoPadre.getProfundidad() + 1);
+			
 			nodoHijo.getValorE(estrategia, nodoPadre, estado);
 			listaNodos.add(nodoHijo);
 
@@ -45,8 +48,8 @@ public class Problema {
 	public boolean poda(LinkedList<NodoBusqueda> nodo) {
 		boolean ok = false;
 		for (int i = 0; i < nodo.size(); i++) {
-			if (tablaPoda.containsKey(nodo.get(i).getEstado().toString())) {
-				if (tablaPoda.get(nodo.get(i).getEstado().toString()) > nodo.get(i).getValor()) {
+			if (tablaPoda.containsKey(nodo.get(i).getEstado().toString())) {				
+				if (tablaPoda.get(nodo.get(i).getEstado().toString()) > nodo.get(i).getValor()) {					
 					tablaPoda.put(nodo.get(i).getEstado().toString(), nodo.get(i).getValor());
 				} else {
 					ok = true;
@@ -64,6 +67,7 @@ public class Problema {
 		while(solucion==null&&actual_prof<=max_prof){
 			solucion=Busqueda_Acotada(estado, problema,actual_prof, estrategia, hacerpoda);
 			actual_prof=actual_prof+inc_prof;
+			
 		}
 		return solucion;
 	}	
@@ -72,14 +76,16 @@ public class Problema {
 
 		try {
 			Stack<NodoBusqueda> rutaSolucion;
-			NodoBusqueda nodoActual = new NodoBusqueda(null, estado, 0, "", 0);
+			NodoBusqueda nodoActual = new NodoBusqueda(null, estado, 0, "", 0);				
 			frontera.insertar(nodoActual);
+			complejidadE++;
 			boolean solucion = false;
 			LinkedList<Estado> listaSucesores;
 			LinkedList<NodoBusqueda> listaNodos = null;
 
-			while (!solucion && frontera.getNodosFrontera().size() != 0) {
+			while (!solucion && frontera.getNodosFrontera().size() != 0) {				
 				nodoActual = frontera.getPrimerN();
+				complejidadE++;
 				if (Estado_Meta(nodoActual.getEstado())){
 					solucion = true;
 				}else if (nodoActual.getProfundidad() < max_prof){					
@@ -87,12 +93,12 @@ public class Problema {
 					listaNodos = CrearListaNodos(nodoActual, listaSucesores, estrategia);
 					if (poda(listaNodos)&&hacerpoda) {
 						for (int i = 0; i < listaNodos.size(); i++) {
-							if (tablaPoda.get(listaNodos.get(i).getEstado().toString()) < listaNodos.get(i).getValor())
-								listaNodos.remove(i);
-						}
-
-					}//Poda*/
-					frontera.insertarLista(listaNodos);
+							if (tablaPoda.get(listaNodos.get(i).getEstado().toString()) < listaNodos.get(i).getValor()){
+								listaNodos.remove(i);								
+							}	
+						}											
+					}
+					frontera.insertarLista(listaNodos);						
 				}				
 			}
 			if (solucion)
@@ -113,6 +119,10 @@ public class Problema {
 			nodo = nodo.getNodoBusq();
 		}
 		return sol;
+	}
+
+	public long getComplejidadE() {
+		return complejidadE;
 	}
 
 }

@@ -61,22 +61,26 @@ public class NodoBusqueda implements Comparable<NodoBusqueda>{
         	valor=(float) aux.getCosto();
             break;               
         case 5:   		 
-    		valor=heuristica(aux,estado);
+    		valor=heuristica(estado);
             break;
         case 6:     		    		
-    		valor=(float) (heuristica(aux,estado)+aux.getCosto());
+    		valor=(float) (heuristica(estado)+aux.getCosto());
             break;
         }		
 		return estrategia;
 	}
-	public Float heuristica(NodoBusqueda aux,Estado estado){
+	public Float heuristica(Estado estado){
 		float aux1=0;
 		float valor=0;
-		for(int i=0;i<estado.getIdD().size();i++){    	
-    		valor=(float) aux.getEstado().getIdO().calcularDistanciaNodoAdy(estado.getIdD().get(i));
-    		if(aux1<valor){
-				aux1=valor;
-			}	
+		if(estado.getIdD().isEmpty()){
+			aux1=0;
+		}else{
+			for(int i=0;i<estado.getIdD().size();i++){    	
+	    		valor=(float) estado.getIdO().calcularDistanciaNodoAdy(estado.getIdD().get(i));
+	    		if(aux1<=valor){
+					aux1=valor;
+				}	
+			}
 		}
 		return aux1;
 	}
@@ -86,19 +90,15 @@ public class NodoBusqueda implements Comparable<NodoBusqueda>{
 	public void setValor(float valor) {
 		this.valor = valor;
 	}
-	
-	public int compareTo(NodoBusqueda nodo){		
-		/*int v;
-		if(valor<nodo.getValor())
+	public int compareTo(NodoBusqueda o) {
+		int v;
+		if(valor<o.getValor())
 			v= -1;
-		else if (valor > nodo.getValor())
+		else if (valor> o.getValor())
 			v = 1;
 		else 
-			v=0;*/
-		int v=-1;
-		if(valor>nodo.getValor()){
-			v=1;
-		}
+			v=0;		
 		return v;
 	}
 }
+	

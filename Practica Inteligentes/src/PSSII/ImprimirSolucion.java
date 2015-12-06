@@ -44,7 +44,7 @@ public class ImprimirSolucion {
 		this.solucion = solucion;
 	}
 
-	public void generartxt(long tiempo) throws IOException {
+	public void generartxt(long tiempo,Problema problema) throws IOException {
 		NodoBusqueda nodo;
 		RandomAccessFile salida = null;
 		salida = new RandomAccessFile("solucion.txt", "rw");
@@ -55,6 +55,7 @@ public class ImprimirSolucion {
 			int num_nodos;
 			int contador = 0;			
 			num_nodos = solucion.size();
+			long complejidadE=problema.getComplejidadE();
 			nodo = solucion.peek();
 			id_Origen = nodo.getEstado().getIdO().getId();
 			salida.writeBytes("\n\nEstado --> Id Nodo Coordenadas: (Latitud Nodo, Longitud Nodo)");
@@ -90,7 +91,8 @@ public class ImprimirSolucion {
 			salida.writeBytes("\nEstrategia:   " + estrategia + ".");
 			salida.writeBytes("\nProfundidad Maxima:   " + max_prof + ".");			
 			salida.writeBytes("\nCoste de la Solucion: " + costo + " metros.");
-			salida.writeBytes("\nComplejidad Espacial: " + num_nodos + " nodos.");
+			salida.writeBytes("\nProfundidad: " + num_nodos + " nodos.");
+			salida.writeBytes("\nComplejidad Espacial: " + complejidadE + " nodos.");
 			salida.writeBytes("\nComplejidad Temporal: " + (double)tiempo/1000000000 + " segundos.");
 			salida.close();
 			System.out.println("Se ha generado correctamente el fichero .txt");
@@ -100,11 +102,11 @@ public class ImprimirSolucion {
 		}
 	}
 
-	public void generargpx(long tiempo) throws IOException {
+	public void generargpx(long tiempo,Problema problema) throws IOException {
 		if (solucion != null) {
 			double costo;
-			int num_nodos;
-
+			int num_nodos;						
+			
 			NodoBusqueda nodo;
 			RandomAccessFile salida;
 			salida = new RandomAccessFile("solucion.gpx", "rw");
@@ -114,7 +116,8 @@ public class ImprimirSolucion {
 			salida = new RandomAccessFile("solucion.gpx", "rw");
 
 			num_nodos = solucion.size();
-			nodo = solucion.peek();
+			long complejidadE=problema.getComplejidadE();
+			nodo = solucion.peek();			
 
 			salida.writeBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 			salida.writeBytes("\n<gpx version=\"1.0\">");
@@ -137,12 +140,13 @@ public class ImprimirSolucion {
 			salida.writeBytes("\n\t\t<desc><b>Datos de la solucion</b>");
 			salida.writeBytes("\n\t\t\t<ele>Nodo Origen: " + nodo.getEstado().getIdO().getId() + "</ele>");
 			for (int i = 0; i < nodo.getEstado().getIdD().size(); i++) {
-				salida.writeBytes("\n\t\t\t<ele>Nodo Objetivo: " + nodo.getEstado().getIdD().get(i).getId() + "</ele>");
-			}
+				salida.writeBytes("\n\t\t\t<ele>Nodo Objetivo: " + nodo.getEstado().getIdD().get(i) + "</ele>");
+			}			
 			salida.writeBytes("\n\t\t\t<ele>Estrategia: " + estrategia + "</ele>");
 			salida.writeBytes("\n\t\t\t<ele>Profundidad Maxima: " + max_prof + "</ele>");
+			salida.writeBytes("\n\t\t\t<ele>Profundidad de la Solucion: " + num_nodos + "</ele>");
 			salida.writeBytes("\n\t\t\t<ele>Coste de la Solucion: " + costo + " metros</ele>");
-			salida.writeBytes("\n\t\t\t<ele>Complejidad Espacial: " + num_nodos + " nodos</ele>");
+			salida.writeBytes("\n\t\t\t<ele>Complejidad Espacial: " + complejidadE + " nodos</ele>");
 			salida.writeBytes("\n\t\t\t<ele>Complejidad Temporal: " + tiempo + " nanosegundos</ele>");
 			salida.writeBytes("\n\t\t</desc>");
 
